@@ -1,4 +1,5 @@
 use bytes::BytesMut;
+use nxlkv::utils::buf_to_vec;
 use tokio::{io::AsyncReadExt, net::TcpListener};
 
 #[tokio::main]
@@ -9,6 +10,8 @@ pub async fn main() -> Result<(), std::io::Error> {
     loop {
         let (mut socket, _) = listener.accept().await?;
         socket.read_buf(&mut buf).await?;
-        println!("received {:?}", buf);
+
+        let received_messages = buf_to_vec(&mut buf);
+        println!("received {:?}", received_messages);
     }
 }
